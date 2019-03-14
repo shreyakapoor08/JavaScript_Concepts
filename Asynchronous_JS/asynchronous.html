@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Asynchronous JavaScript</title>
+</head>
+<body>
+<h1>Asynchronous JavaScript</h1>
+<script>
+    //Lecture 1
+    // const second = () => {
+    //    setTimeout(() => {
+    //        console.log('Async hey there');
+    //    }, 2000) ///2000 milli second is 2 second
+    // }
+    // const first = () => {
+    //     console.log('Hey there');
+    //     second();
+    //     console.log('The end');
+    // }
+    //
+    // first();
+
+    ///synchronous means that instruction appears in the order in which they are called
+
+
+
+
+
+    //LECTURE 2
+    // function  getRecipe() {
+    //     setTimeout(() => {
+    //         const recipeID = [523,883,432,974];
+    //         console.log(recipeID);
+    //
+    //         setTimeout(id => {
+    //             const recipe = {title: 'Fresh tomato pasta', publisher: 'Jonas'};
+    //             console.log(`${id}: ${recipe.title}`);
+    //
+    //             setTimeout(publisher => {  //if we have only one argument then we need not add additional brackets
+    //                 const  recipe2 = {title: 'Italian Pizza', publisher: 'Jonas'};
+    //                 console.log(recipe)
+    //             }, 1500, recipe.publisher);
+    //         }, 1500, recipeID[2]); //it will be 432 in the recipeID array
+    //
+    //     },1500);
+    // }
+    //
+
+
+
+
+
+    //LECTURE 4
+    // const getIDs = new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //        resolve([523, 883, 432, 974]);
+    //     }, 1500);
+    // });
+    //
+    // const getRecipe = recID => {
+    //   return new Promise((resolve, reject) => {
+    //       setTimeout(ID => {
+    //           const recipe = {title: 'Fresh tomato pasta', publisher: 'Jonas'};
+    //           resolve(`${ID}: ${recipe.title}`);
+    //       }, 1500, recID);
+    //   });
+    // };
+    //
+    // const getRelated = publisher => {
+    //   return new Promise((resolve, reject) => {
+    //      setTimeout(pub => {
+    //          const  recipe = {title: 'Italian Pizza', publisher: 'Jonas'};
+    //          resolve(`${pub}: ${recipe.title}`);
+    //      }, 1500, publisher);
+    //   });
+    // };
+
+
+    // getIDs
+    //     .then(IDs => {
+    //    console.log(IDs);
+    //    return getRecipe(IDs[2])
+    // })//then method allows us to add an event handeler for the case that the promise is fulfilled which means we have result
+    //  .then(recipe => {
+    //     console.log(recipe);
+    //     return getRelated('Jonas SchmedIddd');
+    //     })
+    //     .then(recipe => {
+    //         console.log(recipe);
+    //     })
+    //     .catch(error => {
+    //    console.log('error!!');
+    // });
+
+    //LECTURE 5
+    // async function getRecipesAW() {
+    //     const IDs = await getIDs; //await expression will stop the code from executing until the promise is fulfilled
+    //     console.log(IDs); //if promise is rejected then an error will be thrown
+    //     const recipe = await getRecipe(IDs[2]);
+    //     console.log(recipe);
+    //     const related = await getRelated('Jonas Schmedtmann'); //await expression can only occur inside async function which runs in the background.
+    //     console.log(related);
+    //
+    //     return recipe;
+    // }
+    // getRecipesAW().then(result => console.log(`${result} is the best ever!`));
+
+
+
+    //LECTURE 7 making AJAX callwith fetch and promises
+    function getWeather(woeid) {
+        fetch
+        (`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`)   //in bracket pass URL where the API is located
+            .then(result => {
+                //console.log(result);
+                return result.json();
+            })
+            .then(data => {
+                //console.log(data);
+                const today = data.consolidated_weather[0];
+                console.log(`Temperatures today in ${data.title} stay between ${today.min_temp} and ${today.max_temp}.`)
+            })
+            .catch(error => console.log(error));
+    }
+    getWeather(2487956);
+    getWeather(44418);
+
+
+
+    async function getWeatherAW(woeid) {
+        try {
+            const result = await fetch
+            (`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+            const data = await result.json();
+            const tomorrow = data.consolidated_weather[1];
+            console.log(`Temperatures tomorrow in ${data.title} stay between ${tomorrow.min_temp} and ${tomorrow.max_temp}.`);
+            return data;  //what we return from the async function will be the result value of the promise that the function here returns
+         } catch(error) {
+            alert(error);
+        }
+    }
+    getWeatherAW(2487956);
+    let dataLondon;
+    getWeatherAW(44418).then(data => {
+        dataLondon = data;
+        console.log(dataLondon);
+    });
+
+
+
+</script>
+</body>
+</html>
+
