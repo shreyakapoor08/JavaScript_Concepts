@@ -38,18 +38,18 @@ function upload (resizedFileName) {
 }
 
 
-///how to download and resize a file
-download('http://cb.lk/logo.png') // calling download function with this string
-    // .then(function (fileName) { //when download is done then we call resize
-    //     resize(fileName).then(function (resizedFile) {
-    //         console.log("resized file is at: " + resizedFile)
-    //     })
-    // })
-        .then(resize)
-        .then(upload)
-        .then(function (uploadedUrl) {
-            console.log("File was uploaded to : : " + uploadedUrl)
-        })
-        .catch(function (err) { //catch can handle the reject of any promise in the chain
-            console.error(err) //print error in console in red color
-        })
+Promise.all([
+    download('http://cb.lk/logo.png'),
+    download('http://cb.lk/banner.png'),
+    download('http://cb.lk/promo.png')
+]).then(function (downloadValues) {
+    //console.log(values)
+    return Promise.all(downloadValues.map(resize))
+}).then(function(resizeValues) {
+    return Promise.all(resizeValues.map(upload))
+}).then(function(uploadValues) {
+    console.log(uploadValues)
+}).catch(function (err) {
+    console.error(err)
+
+})
