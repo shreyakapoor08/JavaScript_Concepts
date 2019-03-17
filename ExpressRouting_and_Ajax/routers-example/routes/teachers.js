@@ -13,7 +13,12 @@ route.get('/add', (req, res) => {
     })
     res.send(teachers)
 })
-route.get('/:id', (req, res) => res.send(teachers[req.params.id]))
+route.get('/:id', (req, res) => {
+    if (isNaN(parseInt(req.params.id))) {
+        next();
+    }
+    res.send(teachers[req.params.id])
+})
 
 
 module.exports = route
