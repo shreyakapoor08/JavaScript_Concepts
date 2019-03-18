@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="/todos" method="POST"> <!--action means that my form will submit to this("\todos") URL and method is post so data will go as post request-->
+    <input name="newtodo">
+    <input type="submit">
+</form>
+<ul>
+    {{#each todos as |todo|}}
+        <li>{{todo.task}}</li> <!--inserting data using double brace syntax-->
+    {{/each}} <!--this syntax is not valid html but valid handlebars-->
+    <!--anything we write within these braces will be repeated for each item available in the array called todos-->
+</ul>
+</body>
+</html>
