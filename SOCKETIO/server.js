@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
             //split at : , then remove @ from beginning
             let recipient = data.message.split(':')[0].substr(1)
             let rcptSocket = usersockets[recipient]
-            io.to(rcptSocket).emit(data)
+            io.to(rcptSocket).emit('recv_msg', data)
         } else {
             socket.broadcast.emit('recv_msg', data)
         }
