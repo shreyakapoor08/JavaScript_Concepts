@@ -1,4 +1,5 @@
 const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 const Users = require('./db').Users
 
 //serialize user defines how to store user in the session
@@ -22,3 +23,25 @@ passport.deserializeUser(function (username, done) {
         done(err)
     })
 })
+
+//strategy
+passport.use(new LocalStrategy((username, password, done) => {
+    Users.findOne({
+        where: {
+            username: req.body.username
+        }
+    }).then((user) => {
+        if(!user) {
+            return done(null, false, {message: "No such user"})
+        }
+        if (user.password!== req.body.password) {
+            return done(null, false, {message: "Wrong Password"})
+        }
+        return done(null, user)
+    }).catch(err => {
+        return done(err)
+    })
+
+}))
+
+exports = module.exports = passport
