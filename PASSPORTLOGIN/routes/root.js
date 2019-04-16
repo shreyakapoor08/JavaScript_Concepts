@@ -5,7 +5,7 @@ const Users = require('../db').Users
 route.get('/login', (req, res) => {
     res.render('login')
 })
-route.get('/signup', (req,res) => {
+route.get('/signup', (req, res) => {
     res.render('signup')
 })
 route.post('/login', passport.authenticate('local', {
@@ -14,7 +14,7 @@ route.post('/login', passport.authenticate('local', {
 }))
 
 route.post('/signup', (req, res) => {
-    Users.create({
+    Users.create ({
         username: req.body.username,
         password: req.body.password,
         firstName: req.body.firstName,

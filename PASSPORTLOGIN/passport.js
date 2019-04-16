@@ -26,19 +26,21 @@ passport.deserializeUser(function (username, done) {
 
 //strategy
 passport.use(new LocalStrategy((username, password, done) => {
+
+
     Users.findOne({
         where: {
-            username: req.body.username
+            username: username
         }
     }).then((user) => {
         if(!user) {
             return done(null, false, {message: "No such user"})
         }
-        if (user.password!== req.body.password) {
+        if (user.password !== password) {
             return done(null, false, {message: "Wrong Password"})
         }
         return done(null, user)
-    }).catch(err => {
+    }).catch((err) => {
         return done(err)
     })
 

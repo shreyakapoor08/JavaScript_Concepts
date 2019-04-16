@@ -1,7 +1,13 @@
 const route = require('express').Router()
 
 route.get('/', (req, res) => {
-    res.send("Visible to all")
+    if(req.user) {
+        res.send("Visible to only logged in user")
+    }
+    else {
+        res.redirect('/login')
+    }
+
 })
 
 exports = module.exports = route
