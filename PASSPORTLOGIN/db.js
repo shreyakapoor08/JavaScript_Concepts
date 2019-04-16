@@ -1,5 +1,6 @@
-const sequelize = require('sequelize')
-const db = new sequelize(
+const Sequelize = require('sequelize');
+
+const db = new Sequelize(
     'userdb',
     'userdb',
     'userdb',
@@ -22,6 +23,8 @@ const Users = db.define('users', {
     firstName: Sequelize.STRING,
     lastName: Sequelize.STRING
 })
+
+db.sync().then(() => console.log("Database is ready"))
 
 exports = module.exports = {
     db,
